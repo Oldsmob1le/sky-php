@@ -1,0 +1,405 @@
+* {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+:root {
+    --blue: rgb(101, 193, 206);
+    --white: rgb(241, 249, 251);
+    --section: 112px 0 0 0;
+    --bs-form-switch-bg: url('../image/switch.svg');
+}
+
+body {
+    font-family: 'Qanelas';
+    background: black;
+}
+
+
+/* <---------- Ticket ---------> */
+
+.ticket-bg {
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.664);
+    border-radius: 24px;
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(1000px);
+    background: linear-gradient(0deg, rgba(188, 254, 255, 0.5) 10%, rgba(101, 193, 206, 0.5) 90%);
+}
+
+.info-item h3 {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 44px;
+    color: var(--white);
+}
+
+.info-item p {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--white);
+}
+
+.info-item span {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--blue);
+}
+
+.ticket-line {
+    border: 1px solid rgba(255, 255, 255, 0.541);
+    width: 1px;
+    padding: 0px;
+}
+
+.ticket-price h2 {
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 47px;
+    color: var(--white);
+}
+
+.ticket-price p {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--white);
+}
+
+.ticket-price span {
+    color: var(--blue);
+    font-size: 16px;
+}
+
+.price-bg {
+    border: 1px solid var(--blue);
+    border-radius: 13px;
+    padding: 8px 0px 8px 8px;
+}
+
+.price-switch {
+    margin-top: 2px;
+}
+
+.switch-input:checked {
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+
+.switch-input:focus {
+    border-color: none;
+    box-shadow: none;
+}
+
+
+@media (max-width: 576px) {
+    .ticket-price h2 {
+        font-size: 22px;
+    }
+
+    .ticket-price p {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 0;
+        color: var(--white);
+    }
+
+    .ticket-price span {
+        color: var(--blue);
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 992px) {
+    .info-item img {
+        width: 450px;
+    }
+}
+
+/* PRICE END */
+
+/* <---------- PLACE PAGE ----------> */
+
+/* PLACE START */
+
+.place {
+    padding: var(--section);
+}
+
+.place h2 {
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 38px;
+    color: var(--white);
+    margin-left: 120px;
+    margin-bottom: 50px;
+}
+
+.place-info {
+    margin-top: 300px;
+}
+
+.place-name h3 {
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 50px;
+    color: var(--blue);
+}
+
+.place-name p {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    color: var(--white);
+}
+
+.place-other h3 {
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 56px;
+    color: var(--white);
+}
+
+.place-other p {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: var(--blue);
+}
+
+.plane-biz {
+    margin-top: 260px;
+}
+
+.plane {
+    min-width: 500px;
+    min-height: 1500px;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background: radial-gradient(109.00% 109.00% at 79% 95%, rgba(101, 193, 206, 0.2) 62.09%, rgba(255, 255, 255, 0.2) 100%);
+    border: 1px solid #ffffff59;
+}
+
+.biz {
+    margin-top: 260px;
+}
+
+.eco {
+    margin-top: 300px;
+}
+
+.low {
+    margin-top: 330px;
+}
+
+.free-input,
+.dis-input {
+    padding: 28px 18px;
+    margin: 3px;
+}
+
+.seat-container {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr 0.5fr 0.5fr;
+    gap: 10px;
+}
+
+
+.dis-input {
+    border: 2px solid rgb(101, 193, 206);
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgb(101, 193, 206);
+    background: rgb(101, 193, 206);
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.free-input {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.free-input:checked {
+    border-radius: 4px;
+    background: transparent;
+    border-color: var(--blue);
+    box-shadow: 0px 0px 10px 0px rgb(101, 193, 206);
+}
+
+.free-input:focus {
+    border-color: var(--blue);
+    box-shadow: none;
+    outline: none;
+}
+
+.btn-close:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.dis-input:disabled {
+    opacity: 1;
+}
+
+.switch-input:checked {
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+
+.switch-input:focus {
+    border-color: none;
+    box-shadow: none;
+}
+
+.union-item h3 {
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 50px;
+    color: var(--white);
+}
+
+.union-item p {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 29px;
+    margin: 0;
+    color: var(--white);
+}
+
+.union-item span {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: var(--blue);
+}
+
+.union-check {
+    padding: 25px 20px 25px 20px;
+}
+
+@media (max-width: 992px) {
+    .plane-biz {
+        margin-top: 100px;
+    }
+
+    .place-info {
+        margin-top: 300px;
+    }
+
+    .place h2 {
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 768px) {
+    .place-info {
+        margin-top: 50px;
+    }
+}
+
+@media (max-width: 576px) {
+    .plane {
+        min-width: 200px;
+    }
+
+    .union-item h3 {
+        font-size: 25px;
+        font-weight: 500;
+        line-height: 20px;
+    }
+
+    .union-item p {
+        font-size: 16px;
+        line-height: 23px;
+        color: #ffffffd3;
+    }
+
+    .place {
+        padding: 50px 0 0 0;
+    }
+
+    .price-item p {
+        font-size: 13px;
+    }
+
+    .price-item span {
+        font-size: 12px;
+    }
+
+}
+
+/* PLACE END */
+
+/* <---------- PAYMENT PAGE ----------> */
+
+/* PAYMENT START */
+
+.payment h2 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 38px;
+    color: var(--white);
+}
+
+.payment-item {
+    padding: 20px;
+    border-radius: 24px;
+    background: rgba(229, 250, 253, 0.089);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(187, 240, 247, 0.65);
+    cursor: pointer;
+}
+
+.payment-item:hover {
+    box-shadow: 0px 0px 3px 0px rgb(101, 193, 206);
+    transition: .1s;
+}
+
+.payment-item.active {
+    background-color: rgba(129, 238, 255, 0.616);
+}
+
+.payment-item.active h3 {
+    color: aliceblue;
+}
+
+.payment-item h3 {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 36px;
+    color: var(--blue);
+}
+
+.payment-item p {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 26px;
+    color: var(--white);
+    margin-left: 5px;
+}
+
+.payment-place {
+    margin-top: 220px;
+}
+
+@media (max-width: 1920px) {
+    .payment-place {
+        margin-top: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    .payment-place {
+        margin-top: 60px;
+    }
+}
+
+/* PAYMENT END */

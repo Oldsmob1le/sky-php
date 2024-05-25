@@ -1,0 +1,130 @@
+:root {
+    --bs-btn-active-bg: #65C1CE;
+}
+
+
+.section {
+    padding: 100px 0 0 0;
+}
+
+.btn-primary {
+    background-color: #65C1CE;
+    border-color: #65C1CE;
+}
+
+.btn-primary:hover {
+    background-color: #65c2cedc;
+    border-color: #65c2ceb7;
+}
+.btn-primary:focus {
+    background-color: #65c2cedc;
+    border-color: #65c2ceb7;
+}
+
+.btn-primary:active {
+    --bs-btn-active-bg: #65C1CE;
+    --bs-btn-active-border-color: #65C1CE;
+}
+
+.form-control-search {
+    padding: 6px 180px 6px 30px;
+}
+
+.breadcrumb-item a {
+    color: #65C1CE;
+}
+
+.badge {
+    padding: 3px 5px 5px 5px;
+    border-radius: 2.5px;
+}
+
+.dropdown-item:active {
+    background-color: #65C1CE;
+}
+
+.dropdown-item:checked {
+    background-color: #65C1CE;
+}
+
+.dropdown-item:focus {
+    background-color: #65C1CE;
+}
+
+.form-check-input:active {
+    border-color: #65C1CE;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-check-input:checked {
+    background-color: #65C1CE;
+    border-color: #65C1CE;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-check-input:focus {
+    border-color: #65C1CE;
+    box-shadow: none;
+    outline: none;
+}
+.form-control:active {
+    border-color: #65C1CE;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-control:checked {
+    background-color: #65C1CE;
+    border-color: #65C1CE;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    border-color: #65C1CE;
+    box-shadow: none;
+    outline: none;
+}
+
+.site {
+    border: 1px solid black;
+    border-radius: 14px;
+    padding: 10px;
+    margin: 50px;
+}
+
+
+@media (max-width: 992px) {
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    td::before,
+    th::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+    }
+
+    .form-check {
+        display: none;
+    }
+}
+@media (max-width: 992px) {
+    .section {
+        padding: 60px 0 0 0;
+    }
+}
