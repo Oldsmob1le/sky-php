@@ -45,6 +45,28 @@ a {
     color: rgb(101, 193, 206);
 }
 
+.btn-search {
+    width: 150px;
+    border-radius: 10px;
+    background: var(--white);
+    color: var(--blue);
+    outline: none;
+    border: none;
+}
+
+.btn-search:checked {
+    background: var(--white);
+}
+.btn-search:hover {
+    background: var(--white);
+}
+.btn-search:active {
+    background: var(--white);
+}
+.btn-search:focus {
+    background: var(--white);
+}
+
 .btn-header:hover {
     background-color: rgba(101, 193, 206, 0.9);
     color: #fff;
@@ -221,19 +243,6 @@ footer a {
     background: rgba(101, 194, 206, 0.04);
 }
 
-.btn-search {
-    width: 150px;
-    border-radius: 10px;
-    background: var(--white);
-    color: var(--blue);
-    outline: none;
-    border: none;
-}
-
-.btn:hover .btn-search:hover {
-    background: var(--white);
-    color: var(--blue);
-}
 
 .btn-blue {
     width: 200px;

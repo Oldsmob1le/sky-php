@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <nav class="navbar navbar-expand-lg navbar-dark" aria-label="Offcanvas navbar large">
     <div class="container-xxl">
         <div class="navbar-logo">
-            <a href="#" class="logo d-flex">
+            <a href="index.php" class="logo d-flex">
                 <img src="assets/image/logo.svg" alt="Logo" />
                 <p>SkyBridge</p>
             </a>
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             aria-labelledby="offcanvasNavbar2Label">
             <div class="offcanvas-header">
                 <div class="navbar-logo">
-                    <a href="#" class="logo d-flex">
+                    <a href="index.php" class="logo d-flex">
                         <img src="assets/image/logo.svg" alt="Logo" />
                         <p>SkyBridge</p>
                     </a>
@@ -110,13 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Билеты</a>
+                        <a class="nav-link" href="index.php">Билеты</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="service.html">Услуги</a>
+                        <a class="nav-link" href="service.php">Услуги</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">О нас</a>
+                        <a class="nav-link" href="about.php">О нас</a>
                     </li>
                     <?php if (isset($_SESSION['uid'])): ?>
                         <li class="nav-item">
@@ -228,7 +228,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function () {
+        $("#switchToRegisterFromLogin").click(function (event) {
+            event.preventDefault();
+
+            $('#loginModal').modal('hide'); 
+            $('#registerModal').modal('show');
+        });
+
+        $("#switchToLoginFromRegister").click(function (event) {
+            event.preventDefault();
+
+            $('#registerModal').modal('hide');
+            $('#loginModal').modal('show');
+        });
+    });
     function validateLoginForm() {
         var email = document.getElementById("loginEmail").value;
         var password = document.getElementById("loginPassword").value;
@@ -306,11 +322,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </script>
 
 <script>
-    setTimeout(function() {
+    setTimeout(function () {
         var errorAlert = document.querySelector('.alert');
         if (errorAlert) {
             errorAlert.classList.add('fade-out');
-            setTimeout(function() {
+            setTimeout(function () {
                 errorAlert.remove();
             }, 500);
         }

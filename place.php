@@ -250,18 +250,14 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      function selectFirstAvailableLowcostSeat() {
-        const lowcostSeats = document.querySelectorAll('.plane-low .seat-checkbox');
-        for (let i = 0; i < lowcostSeats.length; i++) {
-          if (lowcostSeats[i].classList.contains('free-input')) {
-            lowcostSeats[i].checked = true; 
-            updatePrice(<?php echo $base_price; ?>); 
-            break;
-          }
-        }
+      function setDefaultMessage() {
+        const totalPriceElement = document.getElementById('totalPrice');
+        const nextButton = document.getElementById('nextButton');
+        totalPriceElement.innerText = 'Выберите место';
+        nextButton.setAttribute('href', '#');
       }
 
-      selectFirstAvailableLowcostSeat();
+      setDefaultMessage();
     });
   </script>
 
@@ -284,10 +280,11 @@
         nextButton.setAttribute('href', url);
       } else {
         totalPriceElement.innerText = 'Выберите место';
-        nextButton.setAttribute('href', '#'); 
+        nextButton.setAttribute('href', '#');
       }
     }
   </script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
     integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"

@@ -47,7 +47,7 @@ if ($from && $to && $date) {
 
     $monthName = $months[$monthNumber];
 
-    $formattedDate = $dateObj->format('d ') . $monthName; 
+    $formattedDate = $dateObj->format('d ') . $monthName;
 
     $sql = "SELECT * FROM flights WHERE origin = '$from' AND destination = '$to'";
 
@@ -77,10 +77,12 @@ if ($from && $to && $date) {
 
     <!DOCTYPE html>
     <html lang="ru">
+
     <head>
         <meta charset="UTF-8">
         <title>Ticket</title>
     </head>
+
     <body>
         <section class='ticket container-xxl'>
             <div class='ticket-bg row m-5 p-5 d-flex flex-column flex-xl-row'>
@@ -107,36 +109,48 @@ if ($from && $to && $date) {
                     <h2 id="endPrice"><?php echo number_format($ticketInfo['base_price'], 0, ',', ' '); ?> ₽</h2>
                     <div class='price-item price-bg d-flex gap-2 align-items-center'>
                         <p>Багаж <span>+ <?php echo number_format($ticketInfo['baggage'], 0, ',', ' '); ?> ₽</span></p>
-                        <div class='form-check form-switch price-switch'>
-                            <input class='form-check-input switch-input' type='checkbox' id='flexSwitchCheckDefault'
-                                onchange="updatePrice(<?php echo $ticketInfo['base_price']; ?>, <?php echo $ticketInfo['baggage']; ?>)" />
-                        </div>
                     </div>
                     <div class='price-item mt-2'>
                         <?php
                         if (isset($_SESSION['uid'])) {
-                            ?>
-                            <a href='place.php?from=<?php echo urlencode($ticketInfo['origin']); ?>&to=<?php echo urlencode($ticketInfo['destination']); ?>&date=<?php echo urlencode($date); ?>&base_price=<?php echo $base_price; ?>'>
-                                <button type='button' class='btn btn-main'>Выбрать билет</button>
-                            </a>
-                            <?php
-                        } else {
-                            ?>
+                            $user_id = $_SESSION['uid'];
+                            $user_role_query = "SELECT role FROM users WHERE id = $user_id";
+                            $user_role_result = $conn->query($user_role_query);
+
+                            if ($user_role_result) {
+                                $user_role_row = $user_role_result->fetch(PDO::FETCH_ASSOC);
+                                $user_role = $user_role_row['role'];
+
+                                if ($user_role == 1 || $user_role == 2) {
+                                    ?>
+                                    <a
+                                        href='place.php?from=<?php echo urlencode($ticketInfo['origin']); ?>&to=<?php echo urlencode($ticketInfo['destination']); ?>&date=<?php echo urlencode($date); ?>&base_price=<?php echo $base_price; ?>'>
+                                        <button type='button' class='btn btn-main'>Выбрать билет</button>
+                                    </a>
+                                    <?php
+                                } else { ?>
+                                    <a href='account.php'>
+                                        <button type='button' class='btn btn-main'>Выбрать билет</button>
+                                    </a>
+                                <?php }
+                            }
+                        } else { ?>
                             <button type="button" class="btn btn-main" data-bs-toggle="modal" data-bs-target="#loginModal">
                                 Выбрать билет
                             </button>
-                            <?php
-                        }
-                        ?>
+                        <?php } ?>
                     </div>
 
+
                     <!-- Модальное окно для входа в аккаунт -->
-                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="loginModalLabel">Войти в аккаунт</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form id="loginForm" method="POST">
@@ -165,24 +179,8 @@ if ($from && $to && $date) {
             </div>
         </section>
 
-        <script>
-            function updatePrice(basePrice, baggagePrice) {
-                const isChecked = document.getElementById('flexSwitchCheckDefault').checked;
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', '', true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        document.getElementById('endPrice').innerText = xhr.responseText;
-                    }
-                };
-
-                xhr.send(`base_price=${basePrice}&baggage=${baggagePrice}&with_baggage=${isChecked}`);
-            }
-        </script>
-
     </body>
+
     </html>
     <?php
 }

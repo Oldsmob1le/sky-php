@@ -1,3 +1,6 @@
+<?php include ('includes/connect.php'); ?>
+<?php include ('includes/session.php'); ?>
+
 <nav class="navbar bg-body-tertiary fixed-top">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
@@ -15,7 +18,7 @@
                         class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="#">Выйти</a></li>
+                    <li><a class="dropdown-item" href="?do=exit">Выйти</a></li>
                 </ul>
             </div>
         </div>
@@ -29,15 +32,15 @@
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item d-flex align-items-center gap-2">
                         <i class="bi bi-house fs-5"></i>
-                        <a class="nav-link active" aria-current="page" href="admin.html">Главная</a>
+                        <a class="nav-link active" aria-current="page" href="A1D2M3I4N5.php">Главная</a>
                     </li>
                     <li class="nav-item d-flex align-items-center gap-2">
                         <i class="bi bi-card-text fs-5"></i>
-                        <a class="nav-link" href="ticket.html">Билеты</a>
+                        <a class="nav-link" href="T1C2K3E4T5.php">Билеты</a>
                     </li>
                     <li class="nav-item d-flex align-items-center gap-2">
                         <i class="bi bi-people fs-5"></i>
-                        <a class="nav-link" href="user.html">Пользователи</a>
+                        <a class="nav-link" href="U1S2E3R4S5.php">Пользователи</a>
                     </li>
                 </ul>
             </div>

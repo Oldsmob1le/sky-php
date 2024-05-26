@@ -49,8 +49,10 @@ try {
 
                     <!-- Поле для выбора даты -->
                     <div class="row-margin col-9 col-sm-5 col-xl">
-                        <input type="date" class="form-control" id="date" name="date" required>
+                        <input type="date" class="form-control" id="date" name="date" required
+                            min="<?php echo date('Y-m-d'); ?>">
                     </div>
+
 
                     <!-- Поле для выбора количества пассажиров -->
                     <div class="row-margin col-9 col-sm-5 col-xl">
@@ -99,7 +101,7 @@ try {
     fromSelect.addEventListener('change', updateDestinations);
 
     document.getElementById('myButton').addEventListener('click', function (event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
         const from = document.getElementById('from').value;
         const to = document.getElementById('to').value;
