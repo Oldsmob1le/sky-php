@@ -22,7 +22,7 @@ $total_price = $_GET['total_price'] ?? $base_price;
 $seats = isset($_GET['seats']) ? explode(',', $_GET['seats']) : [];
 $selected_services = json_decode($_GET['selected_services'] ?? '[]', true);
 
-require_once __DIR__ . '/lib/autoload.php'; // Подключаем автозагрузчик
+require_once __DIR__ . '/lib/autoload.php';
 
 use YooKassa\Client;
 
@@ -71,12 +71,9 @@ $payment = $client->createPayment(
 
   <section class="container-xxl p-5">
     <div class="m-4">
-      <!-- Добавленный JavaScript для перенаправления на страницу оплаты -->
       <script>
-        // Получение confirmation_url из объекта платежа
         var confirmationUrl = "<?= $payment->getConfirmation()->getConfirmationUrl(); ?>";
 
-        // Перенаправление пользователя на страницу оплаты
         window.location.replace(confirmationUrl);
       </script>
     </div>

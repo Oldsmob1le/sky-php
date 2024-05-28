@@ -24,25 +24,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $confirm_password = $_POST['confirm_password'];
         $birthday = $_POST['birthday'];
         $gender = $_POST['gender'];
 
         if ($name === '') {
             $error .= "Введите имя! <br>";
         } else if (strlen($name) < 4) {
-            $error .= "Введите корректрное имя, минимум 4 символа! <br>";
+            $error .= "Введите корректное имя, минимум 4 символа! <br>";
         }
 
         if ($email === '') {
             $error .= "Введите почту! <br>";
         } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error .= "Ввидите верный формат почты! <br>";
+            $error .= "Введите верный формат почты! <br>";
         }
 
         if ($password === '') {
             $error .= "Введите пароль! <br>";
         } else if (strlen($password) < 6) {
-            $error .= "Пароль слишком короткий, минимум 6 символа! <br>";
+            $error .= "Пароль слишком короткий, минимум 6 символов! <br>";
+        }
+
+        if ($password !== $confirm_password) {
+            $error .= "Пароли не совпадают! <br>";
         }
 
         if ($birthday === '') {
@@ -51,20 +56,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $date_regex = "/^\d{4}-\d{2}-\d{2}$/";
             if (!preg_match($date_regex, $birthday)) {
                 $error .= "Введите верный формат даты рождения (YYYY-MM-DD)! <br>";
+            } else if (new DateTime($birthday) > new DateTime()) {
+                $error .= "Дата рождения не может быть в будущем! <br>";
             }
         }
 
-        $gender = $_POST['gender'];
         if ($gender !== 'Мужчина' && $gender !== 'Женщина') {
             $error .= "Выберите правильный пол! <br>";
         }
-
 
         // Уникальность
         $sql = "SELECT count(*) FROM users WHERE email = '$email'";
         $user_count = $conn->query($sql)->fetchColumn();
         if ($user_count == 1) {
-            $error .= 'Данный аккаунт уже зарегестрирован!';
+            $error .= 'Данный аккаунт уже зарегистрирован!';
         }
 
         if (empty($error)) {
@@ -108,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-5">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-lg-5 text-center mt-3 mt-lg-0 mb-5 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="index.php">Билеты</a>
                     </li>
@@ -124,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </li>
                     <?php endif; ?>
                 </ul>
-                <div class="navbar-btn">
+                <div class="navbar-btn d-flex flex-column flex-lg-row px-5 px-lg-0">
                     <?php if (isset($_SESSION['uid'])): ?>
                         <a href="?do=exit"><button type="button" class="btn btn-outline-header">Выйти</button></a>
                     <?php else: ?>
@@ -193,16 +198,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="registerName" class="form-label">ФИО:</label>
                         <input type="text" class="form-control" id="registerName" name="name" placeholder="Введите ФИО"
                             required>
+                        <div id="registerNameError" class="text-danger"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registerEmail" class="form-label">Email:</label>
                         <input type="email" class="form-control" id="registerEmail" name="email"
                             placeholder="Введите email" required>
+                        <div id="registerEmailError" class="text-danger"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registerBirthdate" class="form-label">Дата рождения:</label>
                         <input type="date" class="form-control" id="registerBirthdate" name="birthday"
                             placeholder="Выберите дату рождения" required>
+                        <div id="registerBirthdateError" class="text-danger"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registerGender" class="form-label">Пол:</label>
@@ -211,22 +219,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="Мужчина">Мужчина</option>
                             <option value="Женщина">Женщина</option>
                         </select>
+                        <div id="registerGenderError" class="text-danger"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registerPassword" class="form-label">Пароль:</label>
                         <input type="password" class="form-control" id="registerPassword" name="password"
                             placeholder="Введите пароль" required>
+                        <div id="registerPasswordError" class="text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerConfirmPassword" class="form-label">Подтвердите пароль:</label>
+                        <input type="password" class="form-control" id="registerConfirmPassword" name="confirm_password"
+                            placeholder="Подтвердите пароль" required>
+                        <div id="registerConfirmPasswordError" class="text-danger"></div>
                     </div>
                     <button type="submit" class="btn btn-modal" name="signup">Зарегистрироваться</button>
                 </form>
                 <p class="mt-3">
                     Уже есть аккаунт? <a href="#" id="switchToLoginFromRegister">Войти</a>
                 </p>
-                <div id="registerError" class="text-danger"></div>
             </div>
         </div>
     </div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -234,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $("#switchToRegisterFromLogin").click(function (event) {
             event.preventDefault();
 
-            $('#loginModal').modal('hide'); 
+            $('#loginModal').modal('hide');
             $('#registerModal').modal('show');
         });
 
@@ -276,50 +292,78 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         var birthday = document.getElementById("registerBirthdate").value;
         var gender = document.getElementById("registerGender").value;
         var password = document.getElementById("registerPassword").value;
-        var error = "";
+        var confirmPassword = document.getElementById("registerConfirmPassword").value;
+        var error = false;
+
+        document.getElementById("registerNameError").innerHTML = "";
+        document.getElementById("registerEmailError").innerHTML = "";
+        document.getElementById("registerBirthdateError").innerHTML = "";
+        document.getElementById("registerGenderError").innerHTML = "";
+        document.getElementById("registerPasswordError").innerHTML = "";
+        document.getElementById("registerConfirmPasswordError").innerHTML = "";
 
         if (name === '') {
-            error += "Введите ФИО! <br>";
+            document.getElementById("registerNameError").innerHTML = "Введите ФИО!";
+            error = true;
         } else if (name.length < 4) {
-            error += "Введите корректное ФИО, минимум 4 символа! <br>";
+            document.getElementById("registerNameError").innerHTML = "Введите корректное ФИО, минимум 4 символа!";
+            error = true;
         }
 
         if (email === '') {
-            error += "Введите email! <br>";
+            document.getElementById("registerEmailError").innerHTML = "Введите email!";
+            error = true;
         } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            error += "Введите верный формат email! <br>";
+            document.getElementById("registerEmailError").innerHTML = "Введите верный формат email!";
+            error = true;
         }
 
         if (birthday === '') {
-            error += "Введите дату рождения! <br>";
+            document.getElementById("registerBirthdateError").innerHTML = "Введите дату рождения!";
+            error = true;
         } else {
             var date_regex = /^\d{4}-\d{2}-\d{2}$/;
+            var today = new Date().toISOString().split('T')[0];
             if (!date_regex.test(birthday)) {
-                error += "Введите верный формат даты рождения (YYYY-MM-DD)! <br>";
+                document.getElementById("registerBirthdateError").innerHTML = "Введите верный формат даты рождения (YYYY-MM-DD)!";
+                error = true;
+            } else if (birthday > today) {
+                document.getElementById("registerBirthdateError").innerHTML = "Дата рождения не может быть в будущем!";
+                error = true;
             }
         }
 
         if (gender === '') {
-            error += "Выберите пол! <br>";
+            document.getElementById("registerGenderError").innerHTML = "Выберите пол!";
+            error = true;
         }
 
         if (password === '') {
-            error += "Введите пароль! <br>";
+            document.getElementById("registerPasswordError").innerHTML = "Введите пароль!";
+            error = true;
         } else if (password.length < 6) {
-            error += "Пароль слишком короткий, минимум 6 символов! <br>";
+            document.getElementById("registerPasswordError").innerHTML = "Пароль слишком короткий, минимум 6 символов!";
+            error = true;
         }
 
-
-        if (error !== "") {
-            document.getElementById("registerError").innerHTML = error;
-            return false;
-        } else {
-            document.getElementById("registerError").innerHTML = "";
-            return true;
+        if (confirmPassword === '') {
+            document.getElementById("registerConfirmPasswordError").innerHTML = "Подтвердите пароль!";
+            error = true;
+        } else if (password !== confirmPassword) {
+            document.getElementById("registerConfirmPasswordError").innerHTML = "Пароли не совпадают!";
+            error = true;
         }
+
+        return !error;
     }
 
+    // Установить максимальную дату для даты рождения
+    document.addEventListener('DOMContentLoaded', function () {
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('registerBirthdate').setAttribute('max', today);
+    });
 </script>
+
 
 <script>
     setTimeout(function () {

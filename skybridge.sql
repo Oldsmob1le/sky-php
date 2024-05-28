@@ -42,20 +42,10 @@ CREATE TABLE `flights` (
   `aircraft_model` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Дамп данных таблицы `flights`
---
-
 INSERT INTO `flights` (`id`, `flight_number`, `origin`, `destination`, `departure_time`, `arrival_time`, `flight_duration`, `departure_airport_code`, `arrival_airport_code`, `base_price`, `baggage`, `aircraft_model`) VALUES
 (1, 'FL123', 'Москва', 'Казань', '10:00:00', '00:00:00', '02:00:00', 'SVO', 'KZN', 5700, 2500, '737-800NG'),
-(2, 'FL456', 'Казань', 'Адлер', '14:00:00', '00:00:00', '04:00:00', 'KZN', 'AER', 4600, 2500, '737-800NG'),
-(9, '231', 'вымымв', 'сыфысфсфы', '21:12:00', '12:12:00', '12:21:00', '1212', '2121', 1221, 1221, '2121');
+(2, 'FL456', 'Казань', 'Адлер', '14:00:00', '00:00:00', '04:00:00', 'KZN', 'AER', 4600, 2500, '737-800NG');
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `seat_map`
---
 
 CREATE TABLE `seat_map` (
   `id` int(11) NOT NULL,
@@ -66,9 +56,6 @@ CREATE TABLE `seat_map` (
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Дамп данных таблицы `seat_map`
---
 
 INSERT INTO `seat_map` (`id`, `flight_id`, `seat_number`, `seat_category`, `is_available`, `price`) VALUES
 (158, 1, '1A', 'Business', 1, '10000.00'),
@@ -210,11 +197,6 @@ INSERT INTO `seat_map` (`id`, `flight_id`, `seat_number`, `seat_category`, `is_a
 (294, 2, '23B', 'Lowcost', 1, '4000.00'),
 (295, 2, '23C', 'Lowcost', 1, '4000.00');
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `services`
---
 
 CREATE TABLE `services` (
   `id` int(11) NOT NULL,
@@ -223,9 +205,6 @@ CREATE TABLE `services` (
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Дамп данных таблицы `services`
---
 
 INSERT INTO `services` (`id`, `name`, `description`, `price`) VALUES
 (1, 'Чартерные рейсы', 'Возможность заказа чартерного рейса для больших групп, корпоративных мероприятий или специальных событий.', '50000.00'),
@@ -234,11 +213,6 @@ INSERT INTO `services` (`id`, `name`, `description`, `price`) VALUES
 (4, 'Доставка багажа', 'Предлагаем Вам воспользоваться услугой доставки багажа и горнолыжного снаряжения из аэропорта вылета в указанной вами при посадке в самолет анкете.', '3000.00'),
 (5, 'Питание по желанию', 'Предлагаем Вам услугу питания по желанию. Пассажиры могут выбирать из различных блюд или даже заказывать специальные диетические или вегетарианские варианты.', '1990.00');
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `tickets`
---
 
 CREATE TABLE `tickets` (
   `id` int(11) NOT NULL,
@@ -249,30 +223,16 @@ CREATE TABLE `tickets` (
   `flight_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Дамп данных таблицы `tickets`
---
 
 INSERT INTO `tickets` (`id`, `user_id`, `flight_id`, `seat_numbers`, `purchase_date`, `flight_date`) VALUES
 (1, 1, 2, '99F', '2024-05-26', '2024-05-10');
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `ticket_services`
---
 
 CREATE TABLE `ticket_services` (
   `id` int(11) NOT NULL,
   `ticket_id` int(11) NOT NULL,
   `service_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `users`
---
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -284,103 +244,223 @@ CREATE TABLE `users` (
   `role` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Дамп данных таблицы `users`
---
-
 INSERT INTO `users` (`id`, `name`, `email`, `birthday`, `gender`, `password`, `role`) VALUES
 (1, 'Абдулин Никита Русланович', 'admin@mail.ru', '2005-01-31', 'Мужчина', '$2y$10$F/eviyzOHL9D3ltCZBVYy.N/kjS54F9Dge45EnHrc987WCXMnkl8K', 2),
 (2, 'Василий Иосифович Сталин', 'ussr1945@mail.ru', '2024-05-12', 'Мужчина', '$2y$10$qbb4FHB/faDL3uhAw8ceo.V4jnXcSqSSvmm8qncSHDRrGvjBOr0fe', 1),
 (1231478, 'Олегов Олег Олегович', 'olegov@mail.ru', '2024-05-12', 'Мужчина', '$2y$10$GV90GwY.8n2cule07O5tmuw7v85Vpb/4c/vkKR1vsoaYZyXOMlJGC', 1);
 
---
--- Индексы сохранённых таблиц
---
-
---
--- Индексы таблицы `flights`
---
 ALTER TABLE `flights`
   ADD PRIMARY KEY (`id`);
 
---
--- Индексы таблицы `seat_map`
---
 ALTER TABLE `seat_map`
   ADD PRIMARY KEY (`id`),
   ADD KEY `flight_id` (`flight_id`);
 
---
--- Индексы таблицы `services`
---
 ALTER TABLE `services`
   ADD PRIMARY KEY (`id`);
 
---
--- Индексы таблицы `tickets`
---
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`id`);
 
---
--- Индексы таблицы `ticket_services`
---
 ALTER TABLE `ticket_services`
   ADD PRIMARY KEY (`id`),
   ADD KEY `ticket_id` (`ticket_id`),
   ADD KEY `service_id` (`service_id`);
 
---
--- Индексы таблицы `users`
---
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT для сохранённых таблиц
---
-
---
--- AUTO_INCREMENT для таблицы `flights`
---
 ALTER TABLE `flights`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
---
--- AUTO_INCREMENT для таблицы `seat_map`
---
 ALTER TABLE `seat_map`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
 
---
--- AUTO_INCREMENT для таблицы `services`
---
 ALTER TABLE `services`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
---
--- AUTO_INCREMENT для таблицы `tickets`
---
 ALTER TABLE `tickets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
---
--- AUTO_INCREMENT для таблицы `users`
---
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1231479;
 
---
--- Ограничения внешнего ключа сохраненных таблиц
---
-
---
--- Ограничения внешнего ключа таблицы `seat_map`
---
 ALTER TABLE `seat_map`
   ADD CONSTRAINT `seat_map_ibfk_1` FOREIGN KEY (`flight_id`) REFERENCES `flights` (`id`);
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE `flights` (
+  `id` int(11) NOT NULL,
+  `flight_number` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `origin` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `destination` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `departure_time` time NOT NULL,
+  `arrival_time` time NOT NULL,
+  `flight_duration` time NOT NULL,
+  `departure_airport_code` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `arrival_airport_code` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `base_price` int(11) DEFAULT NULL,
+  `baggage` int(11) DEFAULT NULL,
+  `aircraft_model` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `seat_map` (
+  `id` int(11) NOT NULL,
+  `flight_id` int(11) NOT NULL,
+  `seat_number` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `seat_category` enum('Business','Economy','Lowcost') COLLATE utf8mb4_general_ci NOT NULL,
+  `is_available` tinyint(1) DEFAULT 1,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `services` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tickets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `flight_id` int(11) NOT NULL,
+  `seat_numbers` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `purchase_date` date DEFAULT current_timestamp(),
+  `flight_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `ticket_services` (
+  `id` int(11) NOT NULL,
+  `ticket_id` int(11) NOT NULL,
+  `service_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
+  `gender` enum('Мужчина','Женщина') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `role` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `flights`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `seat_map`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `flight_id` (`flight_id`);
+
+ALTER TABLE `services`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `ticket_services`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ticket_id` (`ticket_id`),
+  ADD KEY `service_id` (`service_id`);
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `flights`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+ALTER TABLE `seat_map`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
+
+ALTER TABLE `services`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+ALTER TABLE `tickets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1231479;
+
+ALTER TABLE `seat_map`
+  ADD CONSTRAINT `seat_map_ibfk_1` FOREIGN KEY (`flight_id`) REFERENCES `flights` (`id`);
+
+COMMIT;
+
+
+-- Insert data into the `flights` table
+INSERT INTO `flights` (`id`, `flight_number`, `origin`, `destination`, `departure_time`, `arrival_time`, `flight_duration`, `departure_airport_code`, `arrival_airport_code`, `base_price`, `baggage`, `aircraft_model`) VALUES
+(4, 'FL799', 'Новосибирск', 'Сочи', '14:00:00', '18:00:00', '04:00:00', 'OVB', 'AER', 3000.00, 2500.00, 'A320');
+
+-- Insert data into the `seat_map` table
+INSERT INTO `seat_map` (`id`, `flight_id`, `seat_number`, `seat_category`, `is_available`, `price`) VALUES
+(296, 3, '1A', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(297, 3, '1B', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(298, 3, '1C', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(299, 3, '2A', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(300, 3, '2B', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(301, 3, '2C', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(302, 3, '3A', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(303, 3, '3B', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(304, 3, '3C', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(305, 3, '4A', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(306, 3, '4B', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(307, 3, '4C', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(308, 3, '5A', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(309, 3, '5B', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(310, 3, '5C', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(311, 3, '6A', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(312, 3, '6B', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(313, 3, '6C', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(314, 3, '7A', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(315, 3, '7B', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(316, 3, '7C', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(317, 3, '8A', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(318, 3, '8B', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(319, 3, '8C', 'Business', FLOOR(RAND() * 2), '10000.00'),
+(320, 3, '9A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(321, 3, '9B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(322, 3, '9C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(323, 3, '10A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(324, 3, '10B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(325, 3, '10C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(326, 3, '11A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(327, 3, '11B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(328, 3, '11C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(329, 3, '12A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(330, 3, '12B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(331, 3, '12C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(332, 3, '13A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(333, 3, '13B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(334, 3, '13C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(335, 3, '14A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(336, 3, '14B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(337, 3, '14C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(338, 3, '15A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(339, 3, '15B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(340, 3, '15C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(341, 3, '16A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(342, 3, '16B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(343, 3, '16C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(344, 3, '17A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(345, 3, '17B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(346, 3, '17C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(347, 3, '18A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(348, 3, '18B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(349, 3, '18C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(350, 3, '19A', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(351, 3, '19B', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(352, 3, '19C', 'Economy', FLOOR(RAND() * 2), '5000.00'),
+(353, 3, '20A', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(354, 3, '20B', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(355, 3, '20C', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(356, 3, '21A', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(357, 3, '21B', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(358, 3, '21C', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(359, 3, '22A', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(360, 3, '22B', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(361, 3, '22C', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(362, 3, '23A', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(363, 3, '23B', 'Lowcost', FLOOR(RAND() * 2), '3000.00'),
+(364, 3, '23C', 'Lowcost', FLOOR(RAND() * 2), '3000.00');
+

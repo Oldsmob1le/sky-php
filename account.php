@@ -30,74 +30,89 @@ if ($role == 1 || $role == 2) {
     $active_tickets_text = 'Вы заблокированы';
 }
 
-// Обработка удаления билета
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ticket_id'])) {
     $ticket_id = $_POST['ticket_id'];
 
-    // Удаление билета
     $delete_ticket_query = "DELETE FROM tickets WHERE id = '$ticket_id' AND user_id = '$user_id'";
     $conn->exec($delete_ticket_query);
 
-    // Перенаправление обратно на страницу аккаунта
     echo '<script>document.location.href="account.php"</script>';
     exit;
 }
 
-// Добавление нового билета
 if ($flight_id && $from && $to && $date && !empty($seats)) {
     $check_ticket_query = "SELECT * FROM tickets WHERE user_id = '$user_id' AND flight_id = '$flight_id' AND seat_numbers = '$seats_str'";
     $check_ticket_result = $conn->query($check_ticket_query);
     $ticket_exists = $check_ticket_result->fetch(PDO::FETCH_ASSOC);
 
     if (!$ticket_exists) {
-        // Получение даты из параметра GET запроса
         $flight_date = $_GET['date'];
 
-        // Измененный запрос на вставку билета с учетом flight_date
         $insert_ticket_query = "INSERT INTO tickets (user_id, flight_id, seat_numbers, purchase_date, flight_date) VALUES ('$user_id', '$flight_id', '$seats_str', NOW(), '$flight_date')";
         $conn->exec($insert_ticket_query);
     }
 }
 
-// Получение информации о билетах пользователя
 $tickets_query = "SELECT * FROM tickets WHERE user_id = '$user_id'";
 $tickets_result = $conn->query($tickets_query);
 $tickets = $tickets_result->fetchAll(PDO::FETCH_ASSOC);
 
-// Получение информации о рейсах, для которых куплены билеты
 $flights_info = array();
 foreach ($tickets as $ticket) {
     $flight_query = "SELECT * FROM flights WHERE id = '{$ticket['flight_id']}'";
     $flight_result = $conn->query($flight_query);
     $flight_info = $flight_result->fetch(PDO::FETCH_ASSOC);
     if ($flight_info) {
+        $departure_time = (new DateTime($flight_info['departure_time']))->format('H:i');
+        $arrival_time = (new DateTime($flight_info['arrival_time']))->format('H:i');
+        $flight_date = new DateTime($ticket['flight_date']);
+        $purchase_date = new DateTime($ticket['purchase_date']);
+
+        $months = [
+            1 => 'Января',
+            2 => 'Февраля',
+            3 => 'Марта',
+            4 => 'Апреля',
+            5 => 'Мая',
+            6 => 'Июня',
+            7 => 'Июля',
+            8 => 'Августа',
+            9 => 'Сентября',
+            10 => 'Октября',
+            11 => 'Ноября',
+            12 => 'Декабря',
+        ];
+
+        $flight_month = $months[$flight_date->format('n')];
+        $purchase_month = $months[$purchase_date->format('n')];
+
+        $formatted_flight_date = $flight_date->format('d ') . $flight_month . $flight_date->format(' Y');
+        $formatted_purchase_date = $purchase_date->format('d ') . $purchase_month . $purchase_date->format(' Y');
+
         $flights_info[] = array(
             'number' => $flight_info['flight_number'],
             'model' => $flight_info['aircraft_model'],
-            'departure' => $flight_info['departure_time'],
-            'arrival' => $flight_info['arrival_time'],
+            'departure' => $departure_time,
+            'arrival' => $arrival_time,
             'from' => $flight_info['origin'],
             'to' => $flight_info['destination'],
-            'date' => $date,
-            'purchase' => $ticket['purchase_date'],
+            'date' => $formatted_flight_date,
+            'purchase' => $formatted_purchase_date,
             'seats' => explode(',', $ticket['seat_numbers']),
             'ticket_id' => $ticket['id']
         );
     }
 }
-
 ?>
 
 <!doctype html>
 <html lang="ru">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SkyBridge</title>
     <link rel="shortcut icon" href="assets/image/logo.svg" type="image/x-icon" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link rel="stylesheet" href="assets/fonts/stylesheet.css" />
     <link rel="stylesheet" href="assets/style/main.css" />
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/navbar-static/" />
@@ -155,7 +170,7 @@ foreach ($tickets as $ticket) {
                                 <div class="info-item text-center">
                                     <h3><?php echo htmlspecialchars($flight_info['departure']); ?></h3>
                                     <p><?php echo htmlspecialchars($flight_info['from']); ?></p>
-                                    <span><?php echo htmlspecialchars($ticket['flight_date']); ?></span>
+                                    <span><?php echo htmlspecialchars($flight_info['date']); ?></span>
                                 </div>
                                 <div class="info-item mt-3 d-none d-md-block">
                                     <img src="assets/image/tickets.svg" class="info-image" alt="Ticket">
@@ -163,7 +178,7 @@ foreach ($tickets as $ticket) {
                                 <div class="info-item text-center">
                                     <h3><?php echo htmlspecialchars($flight_info['arrival']); ?></h3>
                                     <p><?php echo htmlspecialchars($flight_info['to']); ?></p>
-                                    <span><?php echo htmlspecialchars($ticket['flight_date']); ?></span>
+                                    <span><?php echo htmlspecialchars($flight_info['date']); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -200,5 +215,4 @@ foreach ($tickets as $ticket) {
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

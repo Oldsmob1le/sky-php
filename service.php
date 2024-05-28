@@ -40,7 +40,7 @@
 
     <main class="service container-xl">
       <div class="services row m-4 d-flex justify-content-center ">
-        <h2 class="text-center text-md-start">Все услуги</h2>
+        <h2 class="text-center text-md-start ms-4">Все услуги</h2>
         <div class="service-item col-12 col-md-5">
           <h3>Доставка багажа</h3>
           <p>Предлагаем Вам воспользоваться услугой доставки багажа 

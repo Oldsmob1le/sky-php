@@ -80,6 +80,7 @@ $selected_services = [];
               data-aos-duration="<?php echo 400 + ($index * 100); ?>">
               <h3><?php echo htmlspecialchars($service['name']); ?></h3>
               <p><?php echo htmlspecialchars($service['description']); ?></p>
+              <p class="d-flex justify-content-end" style="color: rgba(255, 255, 255, 0.745);"><?php echo htmlspecialchars($service['price']); ?> ₽</p>
             </div>
           </a>
         <?php endforeach; ?>

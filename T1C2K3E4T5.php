@@ -1,5 +1,4 @@
 <?php
-
 include ('includes/connect.php');
 include ('includes/session.php');
 
@@ -13,26 +12,26 @@ if (!isset($_SESSION['uid'])) {
 if (isset($_POST['ticketadd'])) {
     try {
         $sql = "INSERT INTO flights (flight_number, origin, destination, departure_time, arrival_time, flight_duration, arrival_airport_code, departure_airport_code, base_price, baggage, aircraft_model) 
-                VALUES (:flight_number, :origin, :destination, :departure_time, :arrival_time, :flight_duration, :arrival_airport_code, :departure_airport_code, :base_price, :baggage, :aircraft_model)";
+                VALUES ('{$_POST['flight_number']}', '{$_POST['origin']}', '{$_POST['destination']}', '{$_POST['departure_time']}', '{$_POST['arrival_time']}', '{$_POST['flight_duration']}', '{$_POST['arrival_airport_code']}', '{$_POST['departure_airport_code']}', '{$_POST['base_price']}', '{$_POST['baggage']}', '{$_POST['aircraft_model']}')";
 
-        // Prepare and execute the statement
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([
-            ':flight_number' => $_POST['flight_number'],
-            ':origin' => $_POST['origin'],
-            ':destination' => $_POST['destination'],
-            ':departure_time' => $_POST['departure_time'],
-            ':arrival_time' => $_POST['arrival_time'],
-            ':flight_duration' => $_POST['flight_duration'],
-            ':arrival_airport_code' => $_POST['arrival_airport_code'],
-            ':departure_airport_code' => $_POST['departure_airport_code'],
-            ':base_price' => $_POST['base_price'],
-            ':baggage' => $_POST['baggage'],
-            ':aircraft_model' => $_POST['aircraft_model']
-        ]);
+        // Выполнение запроса
+        $conn->exec($sql);
         echo '<script>document.location.href="?ticket"</script>';
     } catch (PDOException $e) {
         echo "Ошибка: " . $e->getMessage();
+    }
+}
+
+if (isset($_GET['delete'])) {
+    $ticket_id = $_GET['delete'];
+    if (filter_var($ticket_id, FILTER_VALIDATE_INT)) {
+        try {
+            $sql = "DELETE FROM flights WHERE id = $ticket_id";
+            $conn->exec($sql);
+            echo '<script>document.location.href="?ticket"</script>';
+        } catch (PDOException $e) {
+            echo "Ошибка при удалении билета: " . $e->getMessage();
+        }
     }
 }
 ?>
@@ -126,32 +125,11 @@ if (isset($_POST['ticketadd'])) {
                             <td class="edit" data-field="baggage" data-id="<?php echo $row['id']; ?>"
                                 data-label="Цена багажа"><?php echo $row["baggage"]; ?></td>
                             <td class="pt-4 pt-lg-2">
-                                <div class="btn-group">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        Изменить
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><?php echo '<a class="dropdown-item delete-link" href="?delete=' . $row['id'] . '">Удалить</a>'; ?>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <form method="get" onsubmit="return confirm('Вы уверены, что хотите удалить?');">
+                                    <input type="hidden" name="delete" value="<?php echo $row['id']; ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                </form>
                             </td>
-                            <?php
-                            if (isset($_GET['delete'])) {
-                                $ticket_id = $_GET['delete'];
-                                if (filter_var($ticketId, FILTER_VALIDATE_INT)) {
-                                    $ticketId = $conn->quote($ticketId);
-                                    $query = "DELETE FROM flights WHERE id = $ticketId";
-                                    $result = $conn->exec($query);
-                                    if ($result !== false) {
-                                        echo '<script>document.location.href="?ticket"</script>';
-                                    } else {
-                                        echo "Ошибка при удалении билета.";
-                                    }
-                                }
-                            }
-                            ?>
                         </tr>
                     <?php } ?>
                 </tbody>
